@@ -35,9 +35,7 @@ function App() {
     setInputData({ buyPrice: buyingPrice, salePrice: sellingPrice, productWeight: productWeight });
   };
 
-  const handleReset = (e) => {
-    e.preventDefault();
-
+  const handleReset = () => {
     setOutputData({ salePrice: 0, buyPrice: 0, profit: 0 })
   };
 

@@ -2,41 +2,53 @@ import { useEffect, useRef, useState } from "react";
 
 function App() {
   const form = useRef();
-  const [inputData, setInputData] = useState({
-    buyPrice: 0,
-    salePrice: 0,
-    productWeight: 0
-  })
-  const [outputData, setOutputData] = useState({
-    salePrice: 0,
-    buyPrice: 0,
-    profit: 0
+  const [output, setOutput] = useState({});
+  const [data, setData] = useState({
+    price: 0,
+    quantity: 0,
+    weight: 0,
+    delivery: 0
   })
 
 
   useEffect(() => {
-    const BPinBDT = inputData.buyPrice * 16.50;
-    const courierPrice = (650 * inputData.productWeight) + (120 * inputData.productWeight);
-    const extraCost = (BPinBDT + courierPrice) * 5 / 100;
+    const priceBDT = (((data.price * data.quantity) + data.delivery) * 18.5);
+    const totalWeight = (data.weight * data.quantity);
+    const shippingCost = (totalWeight * 850);
+    const totalPrice = (priceBDT + shippingCost);
+    const qntyPrice = (totalPrice / data.quantity);
 
-    const totalCost = BPinBDT + courierPrice + extraCost;
-    const totalProfit = inputData.salePrice - totalCost;
+    const result = {
+      priceBDT: priceBDT,
+      totalWeight: totalWeight,
+      shippingCost: shippingCost,
+      totalPrice: totalPrice,
+      qntyPrice: qntyPrice
+    }
 
-    setOutputData({ salePrice: inputData.salePrice, buyPrice: totalCost.toFixed(2), profit: totalProfit.toFixed(2) });
-  }, [inputData])
+    setOutput(result);
+
+  }, [data])
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const field = form.current;
-    const buyingPrice = parseFloat(field.buy.value);
-    const sellingPrice = parseFloat(field.sale.value);
-    const productWeight = parseFloat(field.weight.value);
+    const price = parseFloat(field.price.value);
+    const quantity = parseFloat(field.quantity.value);
+    const weight = parseFloat(field.weight.value);
+    const delivery = parseFloat(field.delivery.value);
 
-    setInputData({ buyPrice: buyingPrice, salePrice: sellingPrice, productWeight: productWeight });
+    setData({ price: price, quantity: quantity, weight: weight, delivery: delivery });
   };
 
   const handleReset = () => {
-    setOutputData({ salePrice: 0, buyPrice: 0, profit: 0 })
+    setData({
+      price: 0,
+      quantity: 0,
+      weight: 0,
+      delivery: 0
+    });
+    setOutput({});
   };
 
   return (
@@ -46,16 +58,20 @@ function App() {
         <h2>Fill the form:</h2>
         <form ref={form} onSubmit={handleSubmit} method="post">
           <div>
-            <label htmlFor="buyPrice">Buying Price: </label>
-            <input name="buy" id="buyPrice" type="text" placeholder="RMB" required />
+            <label htmlFor="price">Buying Price: </label>
+            <input name="price" id="price" type="text" placeholder="RMB" required />
           </div>
           <div>
-            <label htmlFor="salePrice">Sales Price: </label>
-            <input name="sale" id="salePrice" type="text" placeholder="BDT" required />
+            <label htmlFor="quantity">Quantity: </label>
+            <input name="quantity" id="quantity" type="text" placeholder="999" required />
           </div>
           <div>
-            <label htmlFor="productWeight">Product Weight: </label>
-            <input name="weight" id="productWeight" type="text" placeholder="KG" required />
+            <label htmlFor="weight">Product Weight: </label>
+            <input name="weight" id="weight" type="text" placeholder="KG" required />
+          </div>
+          <div>
+            <label htmlFor="delivery">Delivery fee: </label>
+            <input name="delivery" id="delivery" type="text" placeholder="999" required />
           </div>
           <div className="flex justify-between space-y-0">
             <button onClick={handleReset} type="reset">Reset</button>
@@ -64,19 +80,15 @@ function App() {
         </form>
       </section>
       {
-        outputData.buyPrice > 0 &&
+        output.priceBDT &&
         <section>
           <h2>Calculated Result:</h2>
           <ul>
-            <li>
-              Sales Price: <span>{outputData.salePrice}</span>tk
-            </li>
-            <li>
-              Buying Price: <span>{outputData.buyPrice}</span>tk
-            </li>
-            <li>
-              Profit: <span>{outputData.profit}</span>tk
-            </li>
+            <li>Total Weight: <span>{output.totalWeight}</span>kg</li>
+            <li>Shipping Cost: <span>{output.shippingCost}</span>tk</li>
+            <li>Sub Total: <span>{output.priceBDT}</span>tk</li>
+            <li>Total: <span>{output.totalPrice}</span>tk</li>
+            <li className="border-t pt-1">Quantity: <span>{output.qntyPrice}</span>tk</li>
           </ul>
         </section>
       }

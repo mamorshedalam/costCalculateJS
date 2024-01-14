@@ -29,7 +29,7 @@
     @apply w-full outline-none bg-transparent border rounded py-1 px-4;
   }
   ul {
-    @apply md:space-y-4 space-y-2 text-lg;
+    @apply md:space-y-4 space-y-2;
   }
   span {
     @apply font-semibold tracking-widest;

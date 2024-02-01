@@ -12,9 +12,9 @@ function App() {
 
 
   useEffect(() => {
-    const priceBDT = (((data.price * data.quantity) + data.delivery) * 18.5);
+    const priceBDT = (((data.price * data.quantity) + data.delivery) * 18);
     const totalWeight = (data.weight * data.quantity);
-    const shippingCost = (totalWeight * 850);
+    const shippingCost = (totalWeight * 800);
     const totalPrice = (priceBDT + shippingCost);
     const qntyPrice = (totalPrice / data.quantity);
 

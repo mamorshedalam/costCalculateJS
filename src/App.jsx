@@ -73,7 +73,7 @@ function App() {
         </form>
       </section>
       {
-        // output?.priceBDT &&
+        output?.priceBDT &&
         <section>
           <h2>Calculated Result:</h2>
           <ul>

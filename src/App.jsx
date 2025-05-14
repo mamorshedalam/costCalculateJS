@@ -6,13 +6,12 @@ function App() {
   const [data, setData] = useState({
     price: 0,
     quantity: 0,
-    weight: 0,
-    delivery: 0
+    weight: 0
   })
 
 
   useEffect(() => {
-    const priceBDT = (((data.price * data.quantity) + data.delivery) * 18.5);
+    const priceBDT = ((data.price * data.quantity) * 18);
     const totalWeight = (data.weight * data.quantity);
     const shippingCost = (totalWeight * 850);
     const totalPrice = (priceBDT + shippingCost);
@@ -36,17 +35,15 @@ function App() {
     const price = parseFloat(field.price.value);
     const quantity = parseFloat(field.quantity.value);
     const weight = parseFloat(field.weight.value);
-    const delivery = parseFloat(field.delivery.value);
 
-    setData({ price: price, quantity: quantity, weight: weight, delivery: delivery });
+    setData({ price: price, quantity: quantity, weight: weight });
   };
 
   const handleReset = () => {
     setData({
       price: 0,
       quantity: 0,
-      weight: 0,
-      delivery: 0
+      weight: 0
     });
     setOutput({});
   };
@@ -69,10 +66,6 @@ function App() {
             <label htmlFor="weight">Product Weight: </label>
             <input name="weight" id="weight" type="text" placeholder="KG" required />
           </div>
-          <div>
-            <label htmlFor="delivery">Delivery fee: </label>
-            <input name="delivery" id="delivery" type="text" placeholder="999" required />
-          </div>
           <div className="flex justify-between space-y-0">
             <button onClick={handleReset} type="reset">Reset</button>
             <button type="submit">Calculate</button>
@@ -80,7 +73,7 @@ function App() {
         </form>
       </section>
       {
-        output.priceBDT &&
+        // output?.priceBDT &&
         <section>
           <h2>Calculated Result:</h2>
           <ul>
